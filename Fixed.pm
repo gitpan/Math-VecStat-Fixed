@@ -6,7 +6,7 @@ package Math::VecStat::Fixed;
 	vecprod ordered convolute
 	sumbyelement diffbyelement
 	allequal median);
-$Math::VecStat::Fixed::VERSION = '0.07';
+$Math::VecStat::Fixed::VERSION = '0.08';
 
 use strict;
 
@@ -133,8 +133,10 @@ sub median
 
 # generate a list of [index,value] pairs
 	my @tras =	map( [$v->[$_],$_], 0..$#{$v} );
+	
+
 # sort by ascending value
-	my @sorted = sort { $a->[0] <=> $b->[0] } @tras;
+	my @sorted = sort { $a->[0] <=> $b->[0] or $a->[1] <=> $b->[1] } @tras;
 # find the middle ordinal
 	my $med = int( $n / 2 );
 
@@ -287,14 +289,12 @@ returns the list reference
 i.e. the median value is 5 and it is found at position 4 of the
 original array.
 
-We do not [yet] perfectly handle the case of ties, i.e.
-the case in which there are several elements of the array
-having the median value, e.g. [1,3,3,3,5].  In this case
-we return [3,2].
-
 =head1 HISTORY
 
  $Log: Fixed.pm,v $
+ Revision 2.0  2003/04/18 12:31:00 david@jamesgang.com
+ Fixed median to handle ties correctly. Updated test.
+
  Revision 1.9  2003/04/18 12:00:00 david@jamesgang.com
  Fixed test for median so that the test is more portable
 
